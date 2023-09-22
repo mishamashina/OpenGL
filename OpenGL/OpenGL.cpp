@@ -2,11 +2,50 @@
 //
 
 #include <iostream>
+#include <GL/glut.h>
+#include "Quad.h"
+
+Quad* quad;
+
+void Init()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-200, 200, -200, 200, -5, 5);
+
+    quad = new Quad();
+
+}
+
+void Update(int)
+{
+    glutPostRedisplay();
+    glutTimerFunc(30, Update, 0);
+}
+
+void Render()
+{
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    quad->Render();
+
+    glutSwapBuffers();
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("OpenGL");
+    glutDisplayFunc(Render);
+    glutTimerFunc(100, Update, 0);
+    Init();
+    glutMainLoop();
+    return 0;
 }
+
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
